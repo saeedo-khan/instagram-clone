@@ -1,24 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import InstApp from './page/InstApp';
+import LoginPage from './page/LoginPage';
+import CssBaseline from '@mui/material/CssBaseline';
+import { PostsProvider } from './context/PostsContext';
 
 function App() {
+
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <PostsProvider>
+    <div className="App" style={{minHeight: '100vh'}}>
+        <CssBaseline />
+          {/* <LoginPage /> */}
+        <InstApp/>
     </div>
+    </PostsProvider>
   );
 }
 
