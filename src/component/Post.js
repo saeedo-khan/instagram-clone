@@ -1,64 +1,88 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Avatar, Box, IconButton, InputBase, Paper, Typography } from '@mui/material';
+import { Avatar, Box, IconButton, InputBase, Paper, Stack, Typography, Modal, Divider, TextField } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MessageIcon from '@mui/icons-material/Message';
 import Picker, { SKIN_TONE_MEDIUM_DARK } from 'emoji-picker-react';
+import Comments from './Comments';
 
 const useStyles = makeStyles({
     wrapPost:{
         width: '614px',
-        maxHeight: '806px',
-        height: 'auto',
-        margin: '1rem 0'
+        margin: '1% 0',
+        display: 'block',
+        boxShadow: 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px'
     },
     container:{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         width: '614px',
-        height: '60px'
+        height: '60px',
+        padding: '2% 0'
     },
     userInfo:{
         display: 'flex',
         alignItems: 'center',
         marginLeft: '2%'
     },
-    image:{
+    imageConfig:{
         objectFit: 'cover',
         width: '100%',
         height: '100%',
         overflow: 'hidden',
         display: 'block',
+    },
+    overlay: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    modalImg:{//879
+        // height: '100%',
+        // overflow: 'hidden',
+        // width: '60%',
+        // background: 'black',
+        // display: 'flex',
+        // alignItems: 'center',
+        position: 'relative',
+        aspectRatio: 'auto 1/1',
+        background: 'black',
+        display:'flex',
+        alignItems: 'center',
+        '& img':{
+            maxWidth: '100%',
+            display: 'block',
+        },
+        ['@media(max-width:1000px)']:{
+            '& img':{
+                height:'100%'
+            }
+        }
+    },
+    modalComments:{
+        width: '40%',
+        ['@media(max-width:1000px)']:{
+            width: '100%'
+        },
+
+        // ['@media(max-width:740px)']:{
+        // }
+        
     }
 })
 
-// let useClickOutside = handler => {
-
-//     let domNode = React.useRef()
-  
-//     React.useEffect(() => {
-//       let maybeHandler = e =>{
-//         if(!domNode.current.contains(e.target)){
-//           handler()
-//         }
-//       }
-  
-//       document.addEventListener('click', maybeHandler)
-//       return()=>{
-//         document.removeEventListener('click', maybeHandler)
-//       }
-//     })
-//     return domNode
-// }
-
 function Post({caption, image, username}) {
+
     const classes = useStyles()
 
     const [showEmoji, setShowEmoji] = useState(false)
+    const [modalEmoji, setModalEmoji] = useState(false)
     const [value, setValue] = useState('')
-    
+    const [open, setOpen] = useState(false)
+
+
     const ref = useRef()
 
     // Add emoji with text
@@ -82,9 +106,160 @@ function Post({caption, image, username}) {
     },[])
 
 
-    
+
   return (
-    <Paper className={classes.wrapPost}>
+    <>
+    <Modal
+    open={open}
+    className={classes.overlay}
+    onClose={()=> setOpen(false)}
+    >
+        <Box sx={{
+            backgroundColor: 'white',
+            maxwidth: '1340px',
+            width: '80vw',
+            height: '45vw',
+            display: 'flex',
+            borderRadius: '15px',
+            overflow: 'hidden',
+            ['@media(max-width:1000px)']:{
+                flexDirection: 'column',
+                height: '100%',
+                overflowY: 'scroll',
+                borderRadius: '0',
+            },
+            ['@media(max-width:740px)']:{
+                width: '95%',
+            }
+        }}>
+            <Box className={classes.modalImg}>
+                <img src={image} alt='img'/>
+            </Box>
+            
+            <Box className={classes.modalComments}>
+                <Box sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    paddingY: 2,
+                    paddingX: 1,
+                    height: '5vw',
+                    ['@media(max-width:1000px)']:{
+                        paddingY: 4
+                    }
+                }}>
+                    <Box sx={{pr: 2, flex: '0 1 5%'}}>
+                    <Avatar variant='circular'>
+                        L
+                    </Avatar>
+                    </Box>
+                    
+                    <Box sx={{cursor: 'default', fontSize: 14, flex: '0 1 15%'}}>{username}</Box>
+                    <Box sx={{marginLeft: 'auto', pr: 1, fontSize: 13, cursor: 'pointer'}}>• • •</Box>
+                </Box>
+
+                <Divider />
+
+                {/* comments section */}
+
+                <Box sx={{
+                    height: '30vw',
+                    overflowY: 'scroll',
+                    ['@media(max-width:1000px)']:{
+                        height: '300px',
+                        overflowY: 'scroll'
+                    }
+                }}>
+                    <Stack>
+                        <Comments name={username}/>
+                        <Comments name={username}/>
+                        <Comments name={username}/>
+                        <Comments name={username}/>
+                    </Stack>
+                </Box>
+
+                
+
+                {/* footer */}
+                <Box sx={{
+                    width: '95%',
+                    ['@media(max-width:1000px)']:{
+                        height: '60px',
+                        padding: 1
+                    }
+                }}>
+                    <Box sx={{
+                        width: '100%',
+                        display: 'flex',
+                        ['@media(max-width:1000px)']:{
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'flex-start'
+                        }
+                        
+                     }}>
+                        <Box sx={{
+                            flex: '0 1 10%',
+                            position: 'relative',
+                            ['@media(max-width:1000px)']:{
+                                flex: '0 1 10%',
+                                position: 'relative',
+                            }
+                            }}>
+                        <IconButton ref={ref}>
+                            <EmojiEmotionsIcon onClick={()=> setModalEmoji(!modalEmoji)}/>
+                            <Box sx={{
+                                position: 'absolute',
+                                bottom: '45px',
+                                left: '10px',
+                                ['@media(max-width:1000px)']:{
+                                    position: 'absolute',
+                                    left: '50%',
+                                    bottom: '45px',
+                                    zIndex: '10'
+                                }
+                            }}>
+                                <Picker
+                                onEmojiClick={onEmojiClick}
+                                disableAutoFocus={true}
+                                skinTone={SKIN_TONE_MEDIUM_DARK}
+                                groupNames={{smileys_people: 'PEOPLE'}}
+                                native
+                                pickerStyle={{
+                                    display: modalEmoji? 'flex': 'none'
+                                }}
+                                />
+                            </Box>
+                        </IconButton>
+                        </Box>
+
+                        <Box sx={{
+                            flex: '0 1 80%',
+                            ['@media(max-width:1000px)']:{
+                                flex: '0 1 80%'
+                            }
+                        }}>
+                            <TextField 
+                            variant='standard' 
+                            sx={{wordBreak: 'break-all'}}
+                            placeholder='Add comments..'
+                            onChange={(e)=> setValue(e.target.value)}
+                            value={value}
+                            fullWidth        
+                            />
+                        </Box>
+
+                        <Box sx={{cursor: 'pointer', marginLeft: 'auto', pr: 1}}>Post</Box>
+                    </Box>
+                </Box>
+                
+            </Box>
+            
+        </Box>
+    </Modal>
+
+    <Stack className={classes.wrapPost}>
     <Box className={classes.container}>
         <Box component='header' className={classes.userInfo}>
             <Avatar sx={{mr: 2, bgcolor:'red'}}>H</Avatar>
@@ -109,7 +284,7 @@ function Post({caption, image, username}) {
         height: 'auto'
     }}>
         <Box>
-            <img className={classes.image} src={image} alt="printer" />
+            <img className={classes.imageConfig} src={image} alt="img" />
         </Box>
     </Box>
 
@@ -160,6 +335,7 @@ function Post({caption, image, username}) {
                     <Typography 
                     variant='subtitle'
                     component='p'
+                    onClick={() => setOpen(true)}
                     sx={{color:'#707070', cursor: 'pointer'}}
                     >View all 3 comments</Typography>
                     
@@ -228,7 +404,8 @@ function Post({caption, image, username}) {
         </Paper>
     </Box>
     
-</Paper>
+</Stack>
+</>
   );
 }
 

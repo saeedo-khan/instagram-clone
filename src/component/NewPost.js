@@ -5,7 +5,7 @@ import { Box, Typography, Input, IconButton } from '@mui/material';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import Picker, { SKIN_TONE_MEDIUM_DARK } from 'emoji-picker-react';
 import { addDoc, collection } from 'firebase/firestore';
-import db from '../firebase-config';
+import { db } from '../firebase-config';
 
 
 //  Reusable clickoutside hook
@@ -24,7 +24,7 @@ let useClickOutside = handler => {
     return()=>{
       document.removeEventListener('mousedown', maybeHandler)
     }
-  })
+  },[])
   return domNode
 }
 

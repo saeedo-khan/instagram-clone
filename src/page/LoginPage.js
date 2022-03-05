@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Paper, Button, IconButton, Typography } from '@mui/material';
+import { Box, Paper, Button, IconButton, Typography, Modal, FormControl, TextField } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import BackgroundHeader from "../imgs/43cc71bb1b43.png"
@@ -11,6 +11,9 @@ import appstore from '../imgs/app-store.png';
 import googleplay from '../imgs/googleplay.png'
 import '../styles/LoginPage.css'
 import Footer from '../component/Footer';
+import Signup from '../component/login/Signup';
+import logo from '../imgs/44c3aac.png'
+
 
 const useStyles = makeStyles({
     section:{
@@ -102,9 +105,6 @@ const useStyles = makeStyles({
         margin: '0.5rem',
         outline: 'none'
     },
-    floatLabel:{
-
-    },
     passForm:{
         width: '25ch',
         textAlign: 'center',
@@ -133,7 +133,10 @@ const useStyles = makeStyles({
         '&:first-of-type':{
             marginRight:'0.5rem'
         }
-    }
+    },
+    // helperText:{
+    //     color: email.length? 'red !important': ''
+    // }
 })
 
 
@@ -143,9 +146,11 @@ function LoginPage() {
     const images = [phoneImg1, phoneImg2, phoneImg3]
     const [showimgs, setShowimgs] = useState(0)
     const [isDisable, setIsDisable] = useState(true)
-    const [name, setName] = useState('')
     const [password, setPassword] = useState('')
-
+    const [email, setEmail] = useState('')
+    const [name, setName] = useState('')
+    // toggle signup backdrop
+    const [open, setOpen] = useState(false)
 
     const handleData = e => {
         if(name.length && password.length){
@@ -166,13 +171,22 @@ function LoginPage() {
             
         }, 5000)
         
-
     },[showimgs])
-
-    
 
 
   return (
+      <>
+      {/* Login modal */}
+    {/* <Signup toggleSign={{signup, setSignup}} /> */}
+
+    <Modal
+    open={open}
+    onClose={()=> setOpen(false)}
+    sx={{display: 'flex',alignItems:'center', justifyContent: 'center'}}
+    >
+        <Signup />
+    </Modal>
+
     <section className={classes.section}>
         <main>
             <article className={classes.LoginContainer}>
@@ -300,7 +314,9 @@ function LoginPage() {
                             <Typography 
                             variant='subtitle2'
                             component='p'
-                            >Don't have an account? <span style={{color: '#1565C0', cursor: 'pointer'}}>Sign up</span> </Typography>
+                            >Don't have an account? <span 
+                            onClick={()=> setOpen(true)}
+                            style={{color: '#1565C0', cursor: 'pointer'}}>Sign up</span> </Typography>
                         </Box>
                     </Paper>
 
@@ -332,8 +348,8 @@ function LoginPage() {
         <footer style={{paddingBottom: '2rem'}}>
             <Footer />
         </footer> 
-
     </section>
+    </>
   );
 }
 

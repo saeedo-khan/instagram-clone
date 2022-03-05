@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from '@firebase/firestore'
-const firebaseConfig = {
+import { getAuth } from 'firebase/auth'
+const firebaseConfig ={
   apiKey: "AIzaSyAi8OxV2U5YpBTjqG2nOVqeUzfM0KPgWh8",
   authDomain: "instasite-1392d.firebaseapp.com",
   projectId: "instasite-1392d",
@@ -14,8 +15,5 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
-// const db = getFirestore(app);
-
-
-export default getFirestore()
-
+export const db = getFirestore(app);
+export const auth = getAuth(app)
